@@ -1,6 +1,8 @@
 package network.data;
 
 import com.google.gson.annotations.SerializedName;
+import network.data.detail.CastMovie;
+import network.data.detail.KnownFor;
 
 import java.util.ArrayList;
 
@@ -64,47 +66,59 @@ public class ActorResponse {
 
     @Override
     public String toString() {
-        return "ActorResponse{" +
-                "id='" + id + '\'' +
-                ", name='" + name + '\'' +
-                ", role='" + role + '\'' +
-                ", image='" + image + '\'' +
-                ", summary='" + summary + '\'' +
-                ", birthDate='" + birthDate + '\'' +
-                ", deathDate='" + deathDate + '\'' +
-                ", awards='" + awards + '\'' +
-                ", height='" + height + '\'' +
-                ", knownFor=" + knownFor +
-                ", castMovies=" + castMovies +
-                ", errorMessage='" + errorMessage + '\'' +
-                '}';
+        return "Name: " + name +
+                "\nRole: " + role +
+                "\nSummary: " + summary +
+                "\nBirthDate: " + birthDate +
+                "\nAwards: " + awards;
     }
-}
 
-class CastMovie{
+    public String getId() {
+        return id;
+    }
 
-    @SerializedName("id")
-    public String id;
+    public String getName() {
+        return name;
+    }
 
-    @SerializedName("role")
-    public String role;
+    public String getRole() {
+        return role;
+    }
 
-    @SerializedName("title")
-    private final String title;
+    public String getImage() {
+        return image;
+    }
 
-    @SerializedName("year")
-    private final String year;
+    public String getSummary() {
+        return summary;
+    }
 
-    @SerializedName("description")
-    private final String description;
-}
+    public String getBirthDate() {
+        return birthDate;
+    }
 
-class KnownFor{
-    public String id;
-    public String title;
-    public String fullTitle;
-    public String year;
-    public String role;
-    public String image;
+    public String getDeathDate() {
+        return deathDate;
+    }
+
+    public String getAwards() {
+        return awards;
+    }
+
+    public String getHeight() {
+        return height;
+    }
+
+    public ArrayList<KnownFor> getKnownFor() {
+        return knownFor;
+    }
+
+    public ArrayList<CastMovie> getCastMovies() {
+        return castMovies;
+    }
+
+    public String getErrorMessage() {
+        return errorMessage;
+    }
 }
 

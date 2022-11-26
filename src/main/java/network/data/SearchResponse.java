@@ -2,6 +2,7 @@ package network.data;
 
 
 import com.google.gson.annotations.SerializedName;
+import network.data.detail.SearchItem;
 
 import java.util.ArrayList;
 
@@ -41,49 +42,14 @@ public class SearchResponse {
     public String getErrorMessage() {
         return errorMessage;
     }
-}
 
-class SearchItem {
-    @SerializedName("id")
-    private final String id;
-
-    @SerializedName("resultType")
-    private final String resultType;
-
-    @SerializedName("image")
-    private final String imageUrl;
-
-    @SerializedName("title")
-    private final String title;
-
-    @SerializedName("description")
-    private final String description;
-
-    SearchItem(String id, String resultType, String imageUrl, String title, String description) {
-        this.id = id;
-        this.resultType = resultType;
-        this.imageUrl = imageUrl;
-        this.title = title;
-        this.description = description;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public String getResultType() {
-        return resultType;
-    }
-
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public String getDescription() {
-        return description;
+    @Override
+    public String toString() {
+        return "SearchResponse{" +
+                "searchType='" + searchType + '\'' +
+                ", expression='" + expression + '\'' +
+                ", results=" + results +
+                ", errorMessage='" + errorMessage + '\'' +
+                '}';
     }
 }
