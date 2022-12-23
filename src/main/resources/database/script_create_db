@@ -1,0 +1,17 @@
+CREATE TABLE oscar_actors(
+	"oscar_id"			INTEGER PRIMARY KEY,
+	"oscar_name"		TEXT NOT NULL,
+	"oscar_description"	TEXT NOT NULL,
+	"oscar_birthDate"	TEXT NOT NULL
+);
+
+CREATE TABLE movies(
+	"film_id"				INTEGER PRIMARY KEY AUTOINCREMENT,
+	"film_title"			TEXT NOT NULL,
+	"film_year"				TEXT NOT NULL,
+	"film_description"		TEXT NOT NULL,
+	"id_actor"				INTEGER,
+	FOREIGN KEY (id_actor)
+	REFERENCES oscar_actors (oscar_id)
+	ON DELETE CASCADE ON UPDATE CASCADE
+);
