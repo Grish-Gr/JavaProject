@@ -3,11 +3,15 @@ import csv.ReaderFromCSV;
 import database.DBHandler;
 import database.FilmEntity;
 import database.OscarActorEntity;
+import graphics.ManagerGraphics;
+import graphics.YearMovieJFrame;
 import network.IMDbService;
 import network.data.ActorResponse;
 import network.data.SearchResponse;
 import network.data.detail.CastMovie;
 import network.data.detail.SearchItem;
+import org.jfree.data.time.TimeSeries;
+import org.jfree.data.time.Year;
 import org.sqlite.core.DB;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -20,7 +24,9 @@ import java.nio.file.Paths;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 public class Main {
 
@@ -34,6 +40,7 @@ public class Main {
             .addConverterFactory(GsonConverterFactory.create())
             .build();
     private static final IMDbService service = retrofit.create(IMDbService.class);
+    private static final ManagerGraphics managerGraphics = new ManagerGraphics();
 
     public static void main(String[] args) throws SQLException {
         DBHandler dbHandler = DBHandler.getInstance();
@@ -57,6 +64,11 @@ public class Main {
                         System.out.println();
                     }
                 }
+
+                System.out.print("\nGet graphics year movies (yes/no): ");
+                if (scannerIn.next().equalsIgnoreCase("yes")){
+                    new YearMovieJFrame(managerGraphics, dbHandler.getAllMovie(oscarActorEntity.getId())).show();
+                }
             } else {
                 OscarActor actor = oscarActors.get(indexActor);
                 ActorResponse response = getInfoActor(actor.getName());
@@ -71,6 +83,11 @@ public class Main {
                     }
                 }
 
+                System.out.print("\nGet graphics year movies (yes/no): ");
+                if (scannerIn.next().equalsIgnoreCase("yes")){
+                    new YearMovieJFrame(managerGraphics, response.getCastMovies()).show();
+                }
+
                 System.out.print("\nDownload image actor (yes/no): ");
                 if (scannerIn.next().equalsIgnoreCase("yes")){
                     downloadImage(response.getImage(), response.getName());
@@ -79,15 +96,6 @@ public class Main {
             System.out.print("\nWrite 'end' for End Program: ");
         } while (!scannerIn.next().equalsIgnoreCase("end"));
         scannerIn.close();
-    }
-
-    public static void main2(String[] args){
-        try {
-            DBHandler dbHandler = DBHandler.getInstance();
-            dbHandler.getAllMovie(1).forEach(System.out::println);
-        } catch (SQLException e) {
-            System.out.println("ERROR");
-        }
     }
 
     private static List<OscarActor> getOscarActorFromCSV(){
@@ -115,6 +123,17 @@ public class Main {
             System.out.println("Download Completed!");
         } catch (Exception e){
             System.out.println("Download Failed!");
+        }
+    }
+
+    private static void showGraphic(List<FilmEntity> filmEntityList){
+        Map<String, List<FilmEntity>> mapYearFilms = filmEntityList.stream().collect(
+                Collectors.groupingBy(FilmEntity::getYear)
+            );
+        TimeSeries timeSeries = new TimeSeries("Year - Film");
+        for (String keyYear: mapYearFilms.keySet()){
+            int countFilm = mapYearFilms.get(keyYear).size();
+            timeSeries.add(new Year(Integer.parseInt(keyYear)), countFilm);
         }
     }
 }

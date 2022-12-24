@@ -84,8 +84,6 @@ public class DBHandler {
             statement.setObject(2, actorResponse.getName());
             statement.setObject(3, actorResponse.getSummary());
             statement.setObject(4, actorResponse.getBirthDate());
-            System.out.println("IN DB ");
-            System.out.print(actorResponse.toString());
             statement.execute();
         } catch (SQLException e) {
             e.printStackTrace();
